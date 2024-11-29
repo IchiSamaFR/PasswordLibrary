@@ -13,7 +13,6 @@ internal class Program
         Console.Write("Password : ");
         var pass = ConsoleHelper.GetPassword();
         _passwordContainer = new PasswordContainer(pass);
-        _passwordContainer.Load("encrypt.txt");
 
         Action();
     }
