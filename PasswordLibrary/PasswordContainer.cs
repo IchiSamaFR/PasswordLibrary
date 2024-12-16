@@ -20,11 +20,23 @@ namespace PasswordLibrary
             _password = password;
             _encryptor = new PasswordEncryptor(password);
         }
-        public void Load(string file)
+        public bool Load(string file)
         {
-            var st = File.ReadAllText(file);
-            var str = _encryptor.DecryptString(st);
-            Folders = JsonSerializer.Deserialize<List<PasswordFolder>>(str) ?? new List<PasswordFolder>();
+            try
+            {
+                if (!File.Exists(file))
+                {
+                    return false;
+                }
+                var text = File.ReadAllText(file);
+                var decryptedTxt = _encryptor.DecryptString(text);
+                Folders = JsonSerializer.Deserialize<List<PasswordFolder>>(decryptedTxt) ?? new List<PasswordFolder>();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public void Save(string file)
         {
